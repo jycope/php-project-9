@@ -1,0 +1,15 @@
+{
+    "name": "dmnikolaevv/php-project-9",
+    "autoload": {
+        "psr-4": {
+            "Dmnikolaevv\\PhpProject9\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DimonNikolaev",
+            "email": "dmitriy.nikolaev1337@gmail.com"
+        }
+    ],
+    "require": {}
+}
