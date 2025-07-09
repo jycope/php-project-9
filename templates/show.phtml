@@ -1,0 +1,6 @@
+<p><?= $url->getId() ?></p>
+<p><?= htmlspecialchars($url->getName()) ?></p>
+<p><?= htmlspecialchars($url->getDate()) ?></p>
+<?php if (!empty($flash)): ?>
+  <p style="color: green"><?= $flash['success'][0] ?></p>
+<?php endif; ?>
