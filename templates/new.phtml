@@ -1,0 +1,16 @@
+<form action="/urls" method="post">
+  <div>
+    <label>
+      Название *
+      <input type="text" name="url[name]" value="<?= htmlspecialchars($url->getName() ?? ''); ?>" required>
+    </label>
+    <?php if (isset($errors['name'])): ?>
+    <div><?= $errors['name'] ?></div>
+    <?php endif ?>
+
+    <?php if (!empty($flash)): ?>
+    <p style="color: green"><?= $flash['success'][0] ?></p>
+    <?php endif; ?>
+  </div>
+  <input type="submit" value="Проверить">
+</form>

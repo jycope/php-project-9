@@ -49,7 +49,7 @@ $app->get(
       'errors' => []
     ];
 
-    return $this->get('renderer')->render($response, 'index.phtml', $params);
+    return $this->get('renderer')->render($response, 'new.phtml', $params);
   }
 )->setName('urls.create');
 
@@ -67,12 +67,18 @@ $app->post('/urls', function ($request, $response) use ($router) {
 
     return $response->withRedirect($router->urlFor('urls.show', ['id' => $url->getId()]));
   }
-});
+
+  $params = [
+    'url' => Url::fromArray([$urlData['name']]),
+    'errors' => $errors
+  ];
+
+  return $this->get('renderer')->render($response->withStatus(422), 'new.phtml', $params);
+})->setName('urls.store');
 
 
 $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
   $repo = $this->get(UrlRepository::class);
-  // $urlData = $request->getParsedBodyParam('url');
   $id = $args['id'];
 
   $url = $repo->find($id);
@@ -89,6 +95,20 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
   ];
 
   return $this->get('renderer')->render($response, 'show.phtml', $params);
-})->setName('urls.show');;
+})->setName('urls.show');
+
+$app->get('/urls', function ($request, $response) {
+  $repo = $this->get(UrlRepository::class);
+  $urls = $repo->getEntities();
+
+  $messages = $this->get('flash')->getMessages();
+
+  $params = [
+    'urls' => $urls,
+    'flash' => $messages
+  ];
+
+  return $this->get('renderer')->render($response, 'index.phtml', $params);
+})->setName('urls.index');
 
 $app->run();

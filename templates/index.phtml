@@ -1,16 +1,21 @@
-<form action="/urls" method="post">
-  <div>
-    <label>
-      Название *
-      <input type="text" name="url[name]" value="<?= htmlspecialchars($url->getName() ?? ''); ?>">
-    </label>
-    <?php if (isset($errors['name'])): ?>
-    <div><?= $errors['name'] ?></div>
-    <?php endif ?>
+<h1>Urls</h1>
 
-    <?php if (!empty($flash)): ?>
-    <p style="color: green"><?= $flash['success'][0] ?></p>
-    <?php endif; ?>
-  </div>
-  <input type="submit" value="Проверить">
-</form>
+<?php if (!empty($flash)): ?>
+<p style="color: green"><?= $flash['success'][0] ?></p>
+<?php endif; ?>
+<p><a href="/urls/new">Добавить новый url</a></p>
+<hr>
+<?php if (empty($urls)): ?>
+<p>Nothing to display, sorry. :(</p>
+<?php endif; ?>
+<ul>
+  <?php foreach ($urls as $url): ?>
+  <li>
+    <a href="/urls/<?= $url->getId() ?>">
+      <?= $url->getId() ?>
+      <?= htmlspecialchars($url->getName()) ?>
+      <?= htmlspecialchars($url->getDate()) ?>
+    </a>
+  </li>
+  <?php endforeach; ?>
+</ul>

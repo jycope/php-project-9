@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
+
 class UrlValidator
 {
   public function validate(array $url): array
@@ -11,9 +13,9 @@ class UrlValidator
       $errors['name'] = "Имя не может быть пустым";
     }
 
-    // if (empty($url['date'])) {
-    //   $errors['date'] = "Дата не может быть пустым";
-    // }
+    if (Str::of($url['name'])->length() > 255) {
+      $errors['name'] = "Имя не может быть более 255 символов";
+    }
 
     return $errors;
   }
