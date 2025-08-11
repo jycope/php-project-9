@@ -15,8 +15,13 @@
 </head>
 
 <body>
-  <main class="container">
-    <?= $content ?>
+  <?php if (!empty($flash)): ?>
+    <div class="alert alert-success" role="alert"><?= $flash['success'][0] ?></div>
+  <?php endif; ?>
+  <main class="flex-grow-1">
+    <div class="container-lg mt-3">
+      <?= $content ?>
+    </div>
   </main>
 </body>
 

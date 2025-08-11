@@ -2,10 +2,13 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Url;
+use App\UrlChecks;
+use App\UrlChecksRepository;
 use App\UrlValidator;
 use Slim\Factory\AppFactory;
 use DI\Container;
 use App\UrlRepository;
+use Carbon\Carbon;
 
 session_start();
 
@@ -79,9 +82,11 @@ $app->post('/urls', function ($request, $response) use ($router) {
 
 $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
   $repo = $this->get(UrlRepository::class);
+  $repoUrlChecks = $this->get(UrlChecksRepository::class);
   $id = $args['id'];
 
   $url = $repo->find($id);
+  $urlChecks = $repoUrlChecks->getChecks($id);
 
   if (is_null($url)) {
     return $response->write('Page not found')->withStatus(404);
@@ -91,7 +96,8 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
 
   $params = [
     'url' => $url,
-    'flash' => $messages
+    'flash' => $messages,
+    'checks' => $urlChecks
   ];
 
   return $this->get('renderer')->render($response, 'show.phtml', $params);
@@ -110,5 +116,15 @@ $app->get('/urls', function ($request, $response) {
 
   return $this->get('renderer')->render($response, 'index.phtml', $params);
 })->setName('urls.index');
+
+$app->post('/urls/{url_id}/checks', function ($request, $response, $args) use ($router) {
+  $repo = $this->get(UrlChecksRepository::class);
+
+  $url = UrlChecks::fromArray([$args['url_id'], Carbon::now()]);
+  $repo->save($url);
+  $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+
+  return $response->withRedirect($router->urlFor('urls.show', ['id' => $url->getId()]));
+});
 
 $app->run();

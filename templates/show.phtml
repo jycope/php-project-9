@@ -1,6 +1,49 @@
-<p><?= $url->getId() ?></p>
-<p><?= htmlspecialchars($url->getName()) ?></p>
-<p><?= htmlspecialchars($url->getDate()) ?></p>
-<?php if (!empty($flash)): ?>
-  <p style="color: green"><?= $flash['success'][0] ?></p>
-<?php endif; ?>
+<div class="table-responsive">
+  <h1>Сайт: <?= htmlspecialchars($url->getName()) ?></h1>
+  <table class="table table-bordered table-hover text-nowrap" data-test="checks">
+    <tbody>
+      <tr>
+        <td>ID</td>
+        <td><?= $url->getId() ?></td>
+      </tr>
+      <tr>
+        <td>Имя</td>
+        <td><?= htmlspecialchars($url->getName()) ?></td>
+      </tr>
+      <tr>
+        <td>Дата создания</td>
+        <td><?= htmlspecialchars($url->getDate()) ?></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h2 class="mt-5 mb-3">Проверки</h2>
+<form method="post" action="/urls/<?= $url->getId() ?>/checks">
+  <input type="submit" class="btn btn-primary" value="Запустить проверку" name="url[id]">
+</form>
+
+<table class="table table-bordered table-hover" data-test="checks">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Код ответа</th>
+      <th>h1</th>
+      <th>title</th>
+      <th>description</th>
+      <th>Дата создания</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($checks as $check): ?>
+      <tr>
+        <td><?= $check->getId() ?></td>
+        <td>200</td>
+        <td class="text-break">Простой и удобный учёт инвестиций</td>
+        <td class="text-break">Snowball Income: учет инвестиционного портфеля акций и облигаций</td>
+        <td class="text-break">Snowball Income: учет инвестиций в акции, облигации и криптовалюту, учет дивидендов,
+          календарь выплаты дивидендов, дивидендная доходность портфеля, аналитика и дивиденды компаний</td>
+        <td><?= $check->getDate() ?></td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
