@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS urls (
 CREATE TABLE IF NOT EXISTS url_checks (
     id BIGINT GENERATED ALWAYS AS IDENTITY,
     url_id BIGINT NOT NULL REFERENCES urls(id),
-    status_code BOOLEAN,
+    status_code INT,
     h1 VARCHAR(255),
     description VARCHAR(255),
     created_at TIMESTAMP

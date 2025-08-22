@@ -119,12 +119,18 @@ $app->get('/urls', function ($request, $response) {
 
 $app->post('/urls/{url_id}/checks', function ($request, $response, $args) use ($router) {
   $repo = $this->get(UrlChecksRepository::class);
+  $repoUrl = $this->get(UrlRepository::class);
+  $id = $args['url_id'];
+  $url = $repoUrl->find($id);
+  $name = $url->getName();
 
-  $url = UrlChecks::fromArray([$args['url_id'], Carbon::now()]);
-  $repo->save($url);
+  $checkedSite = $repo->getCheckedSite($name);
+
+  $urlChecks = UrlChecks::fromArray([$id, Carbon::now(), $name, $checkedSite->getStatusCode()]);
+  $repo->save($urlChecks);
   $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
-  return $response->withRedirect($router->urlFor('urls.show', ['id' => $url->getId()]));
+  return $response->withRedirect($router->urlFor('urls.show', ['id' => $urlChecks->getId()]));
 });
 
 $app->run();

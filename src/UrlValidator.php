@@ -17,6 +17,10 @@ class UrlValidator
       $errors['name'] = "Имя не может быть более 255 символов";
     }
 
+    if (!preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url['name'])) {
+      $errors['name'] = "Невалидное название сайта";
+    }
+
     return $errors;
   }
 }

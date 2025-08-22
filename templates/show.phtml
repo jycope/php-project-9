@@ -18,7 +18,7 @@
   </table>
 </div>
 <h2 class="mt-5 mb-3">Проверки</h2>
-<form method="post" action="/urls/<?= $url->getId() ?>/checks">
+<form class="mb-2" method="post" action="/urls/<?= $url->getId() ?>/checks">
   <input type="submit" class="btn btn-primary" value="Запустить проверку" name="url[id]">
 </form>
 
@@ -37,8 +37,8 @@
     <?php foreach ($checks as $check): ?>
       <tr>
         <td><?= $check->getId() ?></td>
-        <td>200</td>
-        <td class="text-break">Простой и удобный учёт инвестиций</td>
+        <td><?= $check->getStatus() ?></td>
+        <td class="text-break"><?= $check->getName() ?></td>
         <td class="text-break">Snowball Income: учет инвестиционного портфеля акций и облигаций</td>
         <td class="text-break">Snowball Income: учет инвестиций в акции, облигации и криптовалюту, учет дивидендов,
           календарь выплаты дивидендов, дивидендная доходность портфеля, аналитика и дивиденды компаний</td>
