@@ -12,16 +12,16 @@
 		}
 	],
 	"require": {
-		"slim/slim": "^4.14",
+		"slim/slim": "^4.15",
 		"slim/psr7": "^1.7",
-		"slim/http": "^1.2",
+		"slim/http": "^1.4",
 		"slim/php-view": "^3.4",
-		"php-di/php-di": "^7.0",
-		"nesbot/carbon": "^2.73",
+		"php-di/php-di": "^7.1",
+		"nesbot/carbon": "^3.10",
 		"slim/flash": "^0.4.0",
-		"guzzlehttp/guzzle": "^7.9",
-		"illuminate/support": "^9.52",
-		"imangazaliev/didom": "^1.13"
+		"guzzlehttp/guzzle": "^7.10",
+		"illuminate/support": "^12.26",
+		"imangazaliev/didom": "^2.0"
 	},
 	"require-dev": {
 		"symfony/var-dumper": "^6.0"

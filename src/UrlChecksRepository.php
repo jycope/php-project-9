@@ -36,7 +36,9 @@ class UrlChecksRepository
       url_checks.id AS id,
       url_checks.status_code,
       url_checks.h1,
+      url_checks.title,
       url_checks.description,
+      urls.name AS name,
       url_checks.created_at
     FROM url_checks
     INNER JOIN urls
@@ -48,7 +50,15 @@ class UrlChecksRepository
     $stmt->execute();
 
     while ($row = $stmt->fetch()) {
-      $urlCheck = UrlChecks::fromArray([$row['id'], $row['created_at'], $row['h1'], $row['status_code']]);
+      $urlCheck = UrlChecks::fromArray([
+        $row['id'],
+        $row['created_at'],
+        $row['name'],
+        $row['status_code'],
+        $row['title'],
+        $row['h1'],
+        $row['description']
+      ]);
       $urlChecks[] = $urlCheck;
     }
 
@@ -64,17 +74,21 @@ class UrlChecksRepository
   {
     $sql = "
     INSERT INTO 
-      url_checks (url_id, h1, created_at, status_code)
-     VALUES (:url_id, :h1, :created_at, :status_code)";
+      url_checks (url_id, h1, title, description, created_at, status_code)
+     VALUES (:url_id, :h1, :title, :description, :created_at, :status_code)";
     $stmt = $this->conn->prepare($sql);
     $created_at = $urlChecks->getDate();
     $urlId = $urlChecks->getId();
-    $name = $urlChecks->getName();
+    $h1 = $urlChecks->getH1();
+    $title = $urlChecks->getTitle();
+    $description = $urlChecks->getMeta();
     $status = $urlChecks->getStatus();
 
     $stmt->bindParam(':url_id', $urlId);
     $stmt->bindParam(':created_at', $created_at);
-    $stmt->bindParam(':h1', $name);
+    $stmt->bindParam(':h1', $h1);
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':description', $description);
     $stmt->bindParam(':status_code', $status);
     $stmt->execute();
   }

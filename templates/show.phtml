@@ -38,10 +38,9 @@
       <tr>
         <td><?= $check->getId() ?></td>
         <td><?= $check->getStatus() ?></td>
-        <td class="text-break"><?= $check->getName() ?></td>
-        <td class="text-break">Snowball Income: учет инвестиционного портфеля акций и облигаций</td>
-        <td class="text-break">Snowball Income: учет инвестиций в акции, облигации и криптовалюту, учет дивидендов,
-          календарь выплаты дивидендов, дивидендная доходность портфеля, аналитика и дивиденды компаний</td>
+        <td class="text-break"><?= $check->getH1() ?></td>
+        <td class="text-break"><?= $check->getTitle() ?></td>
+        <td class="text-break"><?= $check->getMeta() ?></td>
         <td><?= $check->getDate() ?></td>
       </tr>
     <?php endforeach; ?>

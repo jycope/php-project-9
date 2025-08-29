@@ -1,4 +1,7 @@
 <?php
+
+namespace App;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Url;
@@ -9,6 +12,7 @@ use Slim\Factory\AppFactory;
 use DI\Container;
 use App\UrlRepository;
 use Carbon\Carbon;
+use DiDom\Document;
 
 session_start();
 
@@ -125,8 +129,22 @@ $app->post('/urls/{url_id}/checks', function ($request, $response, $args) use ($
   $name = $url->getName();
 
   $checkedSite = $repo->getCheckedSite($name);
+  $document = new Document($name, true);
+  $h1 = $document->has('h1') ? $document->find('h1')[0]->text() : '';
+  $title = $document->has('title') ? $document->find('title')[0]->text() : '';
+  $meta =
+    $document->has('meta[name=description]') ?
+    $document->find('meta[name=description]')[0]->getAttribute('content') : '';
 
-  $urlChecks = UrlChecks::fromArray([$id, Carbon::now(), $name, $checkedSite->getStatusCode()]);
+  $urlChecks = UrlChecks::fromArray([
+    $id,
+    Carbon::now(),
+    $name,
+    $checkedSite->getStatusCode(),
+    $title,
+    $h1,
+    $meta,
+  ]);
   $repo->save($urlChecks);
   $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 
