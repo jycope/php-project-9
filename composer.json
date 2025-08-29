@@ -1,5 +1,5 @@
 {
-	"name": "dmnikolaevv/php-project-9",
+	"name": "hexlet/code",
 	"autoload": {
 		"psr-4": {
 			"App\\": "src/"
