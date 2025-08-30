@@ -13,13 +13,24 @@ use DI\Container;
 use App\UrlRepository;
 use Carbon\Carbon;
 use DiDom\Document;
+use Dotenv\Dotenv;
 
 session_start();
 
 $container = new Container();
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 
 $container->set(\PDO::class, function () {
-  $conn = new \PDO('pgsql:host=localhost;port=5432;dbname=hexlet;user=postgres;password=TSo280LyvLlSuu[');
+  $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+  $username = $databaseUrl['user'];
+  $password = $databaseUrl['pass'];
+  $host = $databaseUrl['host'];
+  $port = $databaseUrl['port'];
+  $dbName = ltrim($databaseUrl['path'], '/');
+
+  $conn = new \PDO("pgsql:host={$host};port=5432;dbname={$dbName};user={$username};password={$password}");
   $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
   return $conn;
