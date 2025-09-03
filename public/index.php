@@ -80,7 +80,7 @@ $app->post('/urls', function ($request, $response) use ($router) {
   if (count($errors) === 0) {
     $url = Url::fromArray([$urlData['name']]);
     $repo->save($url);
-    $this->get('flash')->addMessage('success', 'URL был успешно добавлен');
+    $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
 
     return $response->withRedirect($router->urlFor('urls.show', ['id' => $url->getId()]));
   }
