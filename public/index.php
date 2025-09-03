@@ -27,7 +27,6 @@ $container->set(\PDO::class, function () {
   $username = $databaseUrl['user'];
   $password = $databaseUrl['pass'];
   $host = $databaseUrl['host'];
-  $port = $databaseUrl['port'];
   $dbName = ltrim($databaseUrl['path'], '/');
 
   $conn = new \PDO("pgsql:host={$host};port=5432;dbname={$dbName};user={$username};password={$password}");
