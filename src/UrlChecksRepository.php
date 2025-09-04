@@ -65,6 +65,40 @@ class UrlChecksRepository
     return $urlChecks;
   }
 
+
+  public function getLastCheckForUrl(int $urlId): ?array
+  {
+    $sql = "
+    SELECT 
+      url_checks.status_code,
+      url_checks.created_at
+    FROM url_checks
+    WHERE url_checks.url_id = :url_id
+    ORDER BY url_checks.created_at DESC
+    LIMIT 1";
+    
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindParam(':url_id', $urlId);
+    $stmt->execute();
+    
+    $row = $stmt->fetch();
+    return $row ? $row : null;
+  }
+
+  public function getUrlsWithLastChecks(array $urls): array
+  {
+    $urlsWithChecks = [];
+    foreach ($urls as $url) {
+      $lastCheck = $this->getLastCheckForUrl($url->getId());
+      $urlsWithChecks[] = [
+        'url' => $url,
+        'lastCheck' => $lastCheck
+      ];
+    }
+    
+    return $urlsWithChecks;
+  }
+
   public function save(UrlChecks $urlChecks): void
   {
     $this->create($urlChecks);

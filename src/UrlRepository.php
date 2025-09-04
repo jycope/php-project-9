@@ -15,17 +15,17 @@ class UrlRepository
 
   public function getEntities(): array
   {
-    $cars = [];
+    $urls = [];
     $sql = "SELECT * FROM urls";
     $stmt = $this->conn->query($sql);
 
     while ($row = $stmt->fetch()) {
-      $car = Url::fromArray([$row['name'], $row['created_at']]);
-      $car->setId($row['id']);
-      $cars[] = $car;
+      $url = Url::fromArray([$row['name'], $row['created_at']]);
+      $url->setId($row['id']);
+      $urls[] = $url;
     }
 
-    return $cars;
+    return $urls;
   }
 
   public function find(int $id): ?Url

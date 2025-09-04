@@ -119,12 +119,23 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
 
 $app->get('/urls', function ($request, $response) {
   $repo = $this->get(UrlRepository::class);
+  $urlChecksRepo = $this->get(UrlChecksRepository::class);
   $urls = $repo->getEntities();
+
+  // Получаем данные о последних проверках для каждого URL
+  $urlsWithChecks = [];
+  foreach ($urls as $url) {
+    $lastCheck = $urlChecksRepo->getLastCheckForUrl($url->getId());
+    $urlsWithChecks[] = [
+      'url' => $url,
+      'lastCheck' => $lastCheck
+    ];
+  }
 
   $messages = $this->get('flash')->getMessages();
 
   $params = [
-    'urls' => $urls,
+    'urls' => $urlsWithChecks,
     'flash' => $messages
   ];
 

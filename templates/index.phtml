@@ -1,21 +1,30 @@
-<h1>Urls</h1>
+<h1>Сайты</h1>
 
 <?php if (!empty($flash)): ?>
 <p style="color: green"><?= $flash['success'][0] ?></p>
 <?php endif; ?>
-<p><a href="/urls/new">Добавить новый url</a></p>
-<hr>
 <?php if (empty($urls)): ?>
 <p>Nothing to display, sorry. :(</p>
 <?php endif; ?>
-<ul>
-  <?php foreach ($urls as $url): ?>
-  <li>
-    <a href="/urls/<?= $url->getId() ?>">
-      <?= $url->getId() ?>
-      <?= htmlspecialchars($url->getName()) ?>
-      <?= htmlspecialchars($url->getDate()) ?>
-    </a>
-  </li>
-  <?php endforeach; ?>
-</ul>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover text-nowrap" data-test="urls">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Последняя проверка</th>
+        <th>Код ответа</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($urls as $urlData): ?>
+      <tr>
+        <td><?= $urlData['url']->getId() ?></td>
+        <td><a href="/urls/<?= $urlData['url']->getId() ?>"><?= htmlspecialchars($urlData['url']->getName()) ?></a></td>
+        <td><?= $urlData['lastCheck'] ? $urlData['lastCheck']['created_at'] : '' ?></td>
+        <td><?= $urlData['lastCheck'] ? $urlData['lastCheck']['status_code'] : '' ?></td>
+      </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
