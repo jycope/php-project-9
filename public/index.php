@@ -78,6 +78,12 @@ $app->post('/urls', function ($request, $response) use ($router) {
   $errors = $validator->validate($urlData);
 
   if (count($errors) === 0) {
+    $existing = $repo->findByName($urlData['name']);
+    if ($existing) {
+      $this->get('flash')->addMessage('success', 'Страница уже существует');
+      return $response->withRedirect($router->urlFor('urls.show', ['id' => $existing->getId()]));
+    }
+
     $url = Url::fromArray([$urlData['name']]);
     $repo->save($url);
     $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
